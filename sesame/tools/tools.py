@@ -1,6 +1,8 @@
+from re import X
 import numpy as np
-from scipy import signal
 import librosa
+import hashlib
+from tqdm import trange
 
 def PurgeData(data, level):
     for i in range(level):
@@ -26,3 +28,16 @@ def GetSpectrogram(data, sr):
     out = 'out.png'
     sg = spectrogram_image(data, sr=sr, out=out, hop_length=hop_length, n_mels=n_mels)
     return sg
+
+def HashSha256(s):
+    return hashlib.sha256(s.encode()).hexdigest() # Might change to a faster hashing algorithm later
+
+def GetPeaks(sg, r):
+    print('Getting peaks...')
+    h, w = sg.shape
+    peaks = []
+    for y in trange(1,h-1):
+        for x in trange(1,w-1, leave=False):
+            if sg[y][x] > sg[y-1][x] * r and sg[y][x] > sg[y][x-1] * r and sg[y][x] > sg[y+1][x] * r and sg[y][x] > sg[y][x+1] * r:
+                peaks.append((y, x))
+    return np.array(peaks)

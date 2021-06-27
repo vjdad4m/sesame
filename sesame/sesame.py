@@ -23,9 +23,18 @@ f.set_figheight(4)
 plt.subplot(2, 1, 1)
 plt.plot(data)  # This needs to be shifted to the right
 plt.subplot(2, 1, 2)
-# sg = plt.specgram(data, Fs = sr, cmap='jet')
 sg = tools.GetSpectrogram(data, sr)
 plt.imshow(sg)
 plt.ylabel('Frequency (Hz)')
 plt.xlabel('Time (s)')
+plt.show()
+
+peaks = tools.GetPeaks(sg, 1.075) # At least 7.5% greater than surrounding elements
+print(f'Number of peaks = {len(peaks)}')
+
+peaks_y, peaks_x = peaks.T
+f = plt.figure()
+f.set_figwidth(10)
+f.set_figheight(4)
+plt.plot(peaks_x, peaks_y, 'o', color='black')
 plt.show()
