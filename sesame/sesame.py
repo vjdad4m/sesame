@@ -17,11 +17,15 @@ print(f'{data.shape = }')
 data = tools.PurgeData(data, 2)         # Do not purge when fingerprinting (!) -> loss of data results in wrong fingerprints
 print(f'After purge {data.shape = }')
 
-plt.plot(data)
-plt.show()
-
-plt.specgram(data, Fs = sr, NFFT=128, noverlap=64, cmap='jet')
+f = plt.figure()
+f.set_figwidth(10)
+f.set_figheight(4)
+plt.subplot(2, 1, 1)
+plt.plot(data)  # This needs to be shifted to the right
+plt.subplot(2, 1, 2)
+# sg = plt.specgram(data, Fs = sr, cmap='jet')
+sg = tools.GetSpectrogram(data, sr)
+plt.imshow(sg)
 plt.ylabel('Frequency (Hz)')
 plt.xlabel('Time (s)')
-plt.colorbar()
 plt.show()
