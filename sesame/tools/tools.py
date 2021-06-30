@@ -41,3 +41,11 @@ def GetPeaks(sg, r):
             if sg[y][x] > sg[y-1][x] * r and sg[y][x] > sg[y][x-1] * r and sg[y][x] > sg[y+1][x] * r and sg[y][x] > sg[y][x+1] * r:
                 peaks.append((y, x))
     return np.array(peaks)
+
+def GenerateFingerprints(peaks):
+    peaks = np.sort(peaks)
+    fingerprints = []
+    for i in range(len(peaks)):
+        peak = peaks[i]
+        
+        
